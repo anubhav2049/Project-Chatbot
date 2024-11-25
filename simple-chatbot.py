@@ -1,21 +1,38 @@
-responses = {"hi" : "Hello there, how may I assist you!", "how are you?": "I'm fine! Ask me some simple basic questions", 
-             "help" : "I can assist with basic questions. Try asking something!"}
+from preprocessing import preprocess
+
+responses = {"greet" : "Hello there! How may I assist you?", "age": "I'm an AI, so I don't have any human concept of age!", 
+             "help" : "I can assist with basic questions. Try asking something!", "goodbye": "Goodbye! See you again soon!", "name":"I'm a simple Chatbot that can answer simple questions"}
+
+intent_keywords = {
+    "greet":["hello","hi","hey"],
+    "help":["help","assist","support"],
+    "age":["how old are you","your age"],
+    "name":["what's your name","your name"],
+    "bye":["goodbye","bye bye","see you later"]
+}
+
+def get_intent(user_input):
+    words = preprocess(user_input)
+    for intent, keywords in intent_keywords.items():
+        for keyword in keywords:
+            if keyword in user_input or all(word in words for word in keyword.split()):
+                return intent
+    return None
 
 def chatbot():
     print("Hi, I'm a simple chatbot. Ask me something!")
     while True:
         user_input = input("You: ").lower()
-        if user_input in responses:
-            print(responses[user_input])
-        elif "how old are you" in user_input or "your age" in user_input:
-            print("I'm 20 years old.")
-        elif "what's your name" in user_input or "your name" in user_input:
-            print("I'm a simple chatbot.")
-        elif "bye" in user_input:
-            print("Goodbye! See you soon!")
+        if user_input.lower() in ["bye", "exit", "goodbye"]:
+            print("Chatbot:", responses["goodbye"])
             break
+
+        intent = get_intent(user_input)
+        #print("Chatbot:", intent)      #Debug line; uncomment to see how intent gets tokenized
+        if intent:
+            print("Chatbot:", responses[intent])
         else:
-            print("I'm not sure how to answer that. Ask me a simple question!")
+            print("Chatbot: I'm sorry, but I don't understand. Please rephrase!")
     
     
 if __name__ == "__main__":
