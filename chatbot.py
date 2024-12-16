@@ -3,18 +3,18 @@ from preprocessing import preprocess_hybrid
 responses = {"greet" : "Hello there! How may I assist you?", 
              "age": "I'm an AI, so I don't have any human concept of age!", 
              "help" : "I can assist with basic questions. Try asking something!", 
-             "goodbye": "Goodbye! See you again soon!", 
+             "bye": "Goodbye! See you again soon!", 
              "name":"I'm a simple Chatbot that can answer simple questions",
              "feelings" : "I'm okay! How can I help you?"
              }
 
 intent_keywords = {
     "greet":["hello","hi","hey"],
-    "help":["help","assist","support"],
+    "help":["help","assist","support", "what"],
     "age":["old","age"],
     "name":["name"],
     "bye":["goodbye","bye","later"],
-    "feelings" : ["how", "are", "you", "how's", "it", "going", "do", "feel"]
+    "feelings" : ["how", "are", "you", "how's", "it", "going", "feel"]
 }
 
 def get_intent(user_input):
@@ -35,7 +35,7 @@ def chatbot():
     while True:
         user_input = input("You: ").lower()
         if user_input.lower() in ["bye", "exit", "goodbye"]:
-            print("Chatbot:", responses["goodbye"])
+            print("Chatbot:", responses["bye"])
             break
 
         intent = get_intent(user_input)
