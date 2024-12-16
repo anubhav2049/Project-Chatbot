@@ -21,10 +21,12 @@ def get_intent(user_input):
     words = preprocess_hybrid(user_input)
     print("Debug: Tokenized words: ", words)
     for intent, keywords in intent_keywords.items():
+        print(f"Checking intent '{intent}' with keywords {keywords}")
         for keyword in keywords:
             if " " in keyword and keyword in user_input:
                 return intent
             if any(word in words for word in keywords):
+                print(f"Match found: {intent}")
                 return intent
     return None
 
@@ -37,7 +39,7 @@ def chatbot():
             break
 
         intent = get_intent(user_input)
-        #print("Chatbot:", intent)      #Debug line; uncomment to see how intent gets tokenized
+        print("Chatbot:", intent)      #Debug line; uncomment to see how intent gets tokenized
         if intent:
             print("Chatbot:", responses[intent])
         else:
