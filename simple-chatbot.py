@@ -1,21 +1,30 @@
-from preprocessing import preprocess
+from preprocessing import preprocess_hybrid
 
-responses = {"greet" : "Hello there! How may I assist you?", "age": "I'm an AI, so I don't have any human concept of age!", 
-             "help" : "I can assist with basic questions. Try asking something!", "goodbye": "Goodbye! See you again soon!", "name":"I'm a simple Chatbot that can answer simple questions"}
+responses = {"greet" : "Hello there! How may I assist you?", 
+             "age": "I'm an AI, so I don't have any human concept of age!", 
+             "help" : "I can assist with basic questions. Try asking something!", 
+             "goodbye": "Goodbye! See you again soon!", 
+             "name":"I'm a simple Chatbot that can answer simple questions",
+             "feelings" : "I'm okay! How can I help you?"
+             }
 
 intent_keywords = {
     "greet":["hello","hi","hey"],
     "help":["help","assist","support"],
-    "age":["how old are you","your age"],
-    "name":["what's your name","your name"],
-    "bye":["goodbye","bye bye","see you later"]
+    "age":["old","age"],
+    "name":["name"],
+    "bye":["goodbye","bye","later"],
+    "feelings" : ["how", "are", "you", "how's", "it", "going", "do", "feel"]
 }
 
 def get_intent(user_input):
-    words = preprocess(user_input)
+    words = preprocess_hybrid(user_input)
+    print("Debug: Tokenized words: ", words)
     for intent, keywords in intent_keywords.items():
         for keyword in keywords:
-            if keyword in user_input or all(word in words for word in keyword.split()):
+            if " " in keyword and keyword in user_input:
+                return intent
+            if any(word in words for word in keywords):
                 return intent
     return None
 
